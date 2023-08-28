@@ -3,7 +3,7 @@
 ## Overview
 This project is a simple file transfer system to improve the program transfer capabilites of CNC machines that do not have networking capabilities (pre-NGC Haas, for example). We've developed a device that that connects to the machine's USB port and behaves as a flash drive, but also is accessible over the WiFi network for file transfer. This allows the machine to be connected to the network without any modifications to the machine itself.
 
-We've adopted a "DIY" model for this. Existing systems to do similar things are prohibitavely expensive, so we provide you all the resources to get it going yourself for less than $30 per machine.
+We've adopted a "DIY" model for this. Existing systems to do similar things are prohibitavely expensive, so we provide you all the resources to get it going yourself for about $30 per machine.
 
 ## Bill of Materials
 * [Raspberry Pi Zero W](https://rpilocator.com/?cat=PIZERO%2CPIZERO) - $15.00
@@ -28,6 +28,9 @@ Total cost: $30.11
 ## Usage
 Simply connect the device to your CNC machine's USB port and then use an SFTP client to facilitate file transfer (of course, we recommend the free [Chatter VSCode Extension](https://marketplace.visualstudio.com/items?itemName=chatter-dev.chatter-nc-editor)).
 Please note: When files are updated, the device will pretend to disconnect and reconnect. This is normal behavior. It is *NOT* recommended to run NC file directly off of the device. Instead, copy them to the machine's internal memory before running them. Same rules you would follow when using a USB drive.
+
+## Compatibility
+We are simply emulating a flash drive so in theory, if you can use a flash drive, you can use this. We've tested this with Haas machines with controls dating back to 2007. If you have an earlier machine and get it to work, please let us know! Testing for Fanuc and other controls is planned.
 
 ## Customization
 The provided image is a "blank slate" that will serve most shops' needs. However, there are a few things you may want to customize.
