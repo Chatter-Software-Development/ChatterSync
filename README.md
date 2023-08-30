@@ -57,7 +57,6 @@ The provided image is a "blank slate" that will serve most shops' needs. However
 * What if I have a problem? Join our [Discord Server](https://discord.com/invite/jjKvU3nuaf) and bug us. If you're a developer, feel free to create an issue or pull request on this repo.
 
 ## TODO
-* Fine-tune the enclosure models - they are usable but far from perfect.
 * Test machine write to USB emulation volume.
 * Create utility for resizing/customizing volume options
 
