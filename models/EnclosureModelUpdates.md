@@ -11,10 +11,14 @@ This document serves as a working history + update record of the 3D-printed mode
 - **Slightly more generous internal clearance** to account for differences in printing tolerance. *(~1.5mm clearance around board base, ~0.75mm clearance for ports)*
 
 - **More secure board support structure** with seating pegs to hold board in place. *(May assist in situations where board and enclosure experience vibrational effects)*. Potential future upgrade could include adding complementary concentric pegs to the *Top* part of enclosure which meet bottom pegs when parts are joined so board is completely captured.
+![image](https://github.com/trevordcampbell/ChatterSync/assets/55037769/0a8e6fc6-9c5e-4718-a140-1ff9508380f9)
+![image](https://github.com/trevordcampbell/ChatterSync/assets/55037769/414e71ea-a3e2-435a-9559-ce1894d59f30)
 
 - **Added complementary lip grove** to Bottom + Top portion of enclosure to ensure snug fit between both pieces when joined.
 
 - **Added internal cantilever joint** to provide "Snap Fit" behavior between the two enclosure pieces. *(It should be removable / reusable as well by squeezing the sides of the top)*
+![image](https://github.com/trevordcampbell/ChatterSync/assets/55037769/f4444ada-6ed5-4be7-9914-9a3220e9b957)
+![image](https://github.com/trevordcampbell/ChatterSync/assets/55037769/a7508e59-cd1b-4625-ab96-c2cc051df075)
 
 ### Design Parameters Used:
 This design was produced according to `MMGS` unit space. The following design parameters were used in creating this design:
