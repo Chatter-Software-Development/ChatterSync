@@ -62,7 +62,7 @@ We are simply emulating a flash drive so in theory, if you can use a flash drive
 
 * Compatible with Haas Classic version 13 or later. If you have a big LCD screen, you're good to go. If you have a small LCD screen, go to your "List Program" screen. If you see an option for USB, you're good to go.
 * Tested with Fanuc 31i-B. This is a pretty good option if you don't have a dataserver.
-* Tested with Hurco machines back to 2018, should work with older machines as well but this has not been tested.
+* Tested with Hurco machines back to 2018 (Winmax Mill version 10.2.208), should work with older machines as well but this has not been tested.
 * Tested on Siemens 840D SL (on a DMG Mori)
 * Tested with Bondor tube laser (unknown control version)
 * Limited compatability with Syntec controls (tested on 21ma), the automatic mount/unmount does not work properly so the device must be manually unplugged/plugged in when files are changed remotely.
