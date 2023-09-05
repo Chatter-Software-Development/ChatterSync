@@ -28,8 +28,9 @@ Total cost: $30.11
 ## Important Notes - **Don't Skip This Part!**
 1. Pay close attention to the "WiFi Setup" portion. If you don't do it right, it's going to be a pain!
 2. Connect to the center MicroUSB port (marked `USB`, not `PWR IN`). If you connect to the `PWR IN` port, nothing will happen.
-3. Don't run programs directly off of the ChatterSync device. Copy them to the machine's internal memory first. This is the same rule you would follow when using a USB drive.
-4. When files are updated, the device will disconnect and reconnect from the machine. This is normal behavior.
+3. Be patient! The Raspberry Pi usually takes about 20-30 seconds to boot up. If you don't see the USB volume appear on your machine, give it a few more seconds.
+4. Don't run programs directly off of the ChatterSync device. Copy them to the machine's internal memory first. This is the same rule you would follow when using a USB drive.
+5. When files are updated, the device will disconnect and reconnect from the machine. This is normal behavior.
 
 ## WiFi Setup
 **This step is not complex, but it is important that you follow the steps EXACTLY, otherwise you will run into trouble.**
@@ -57,15 +58,21 @@ Give the device 20-30 seconds to boot.
 Please note: When files are updated, the device will pretend to disconnect and reconnect. This is normal behavior. It is *NOT* recommended to run NC file directly off of the device. Instead, copy them to the machine's internal memory before running them. Same rules you would follow when using a USB drive.
 
 ## Compatibility
-We are simply emulating a flash drive so in theory, if you can use a flash drive, you can use this. We've tested this with Haas machines with controls dating back to 2007. If you have an earlier machine and get it to work, please let us know! Testing for Fanuc and other controls is planned.
+We are simply emulating a flash drive so in theory, if you can use a flash drive, you can use this. Below is a list of what we and the community have tested. If you test this on a machine not listed below, please let us know (or submit a Pull Request to update this README).
+
 * Compatible with Haas Classic version 13 or later. If you have a big LCD screen, you're good to go. If you have a small LCD screen, go to your "List Program" screen. If you see an option for USB, you're good to go.
 * Tested with Fanuc 31i-B. This is a pretty good option if you don't have a dataserver.
-* This seems to not be compatible with Haas NGC controls. We're doing our best to figure out why, but given that NGC controls all have FTP natively, it's not a huge deal - just save yourself the time and use what is built into the machine.
+* Tested with Hurco machines back to 2018, should work with older machines as well but this has not been tested.
+* Tested on Siemens 840D SL (on a DMG Mori)
+* Tested with Bondor tube laser (unknown control version)
+* Limited compatability with Syntec controls (tested on 21ma), the automatic mount/unmount does not work properly so the device must be manually unplugged/plugged in when files are changed remotely.
+* Currently incompatible with Brother B00 control, causing a freeze on the file IO screen. We plan to test with another type of filesystem to see if this fixes the issue.
+* Haas NGC compatibility is questionable. We're doing our best to figure out why, but given that NGC controls all have FTP natively, it's not a huge deal - just save yourself the time and use what is built into the machine.
 
 ## Customization
 The provided image is a "blank slate" that will serve most shops' needs. However, there are a few things you may want to customize.
-1. The hostname of the Raspberry Pi is `chattersync`. You can change this by editing the `/etc/hostname` file or by using the `raspi-config` tool.
-2. The default username and password are `chatter` and `chatter`, respectively. You can change these by using the `passwd` command.
+1. The hostname of the Raspberry Pi is `chattersync`. You can change this by editing the `/etc/hostname` file or by using the `raspi-config` tool. Then name your multiple chattersync devices something like `chattersync1`, `chattersync2`, etc. so they are easy to identify on your network.
+2. The default username and password are `chatter` and `chatter`, respectively. You can change these by using the `passwd` command. Changing the password is recommended, [https://passwordsgenerator.net/](https://passwordsgenerator.net/) is a good tool for generating secure random passwords.
 3. The default IP address is set to use DHCP. If you want to set a static IP address, you can do so by editing the `/etc/dhcpcd.conf` file.
 4. The default size of the USB emulation volume is set to 2GB. If you would like to expand this, you will need to re-image the file located at /usr/share/chattersync.bin. Please note that you will lose all data on the USB emulation volume when you do this, so plan accordingly.
 5. By default, the USB volume is "read-only" to the machine. If you change the .env file located in `/usr/local/share/chattersyncdaemon` and set `READ_ONLY=false`, the machine will be able to write to the USB volume. For lazy folks, the command is `sudo nano /usr/local/share/chattersyncdaemon/.env`. This has not been tested extensively, so use at your own risk.
@@ -77,6 +84,8 @@ The provided image is a "blank slate" that will serve most shops' needs. However
 * If you are unable to connect to the Raspberry Pi, make sure that you have the correct protocol selected. The Raspberry Pi only supports the `sftp` protocol.
 * If you are unable to connect to the Raspberry Pi, make sure that you have the correct port selected. The Raspberry Pi uses port 22.
 * If you are unable to connect to the Raspberry Pi, make sure that you have the correct path selected. The Raspberry Pi uses `/mnt/chatterchattersync/` as the default path.
+* If the machine is unable to read the USB, first test it on your PC to make sure you see the volume connected. If you do not see the volume connected, the issue is likely your USB cable. Try a different cable.
+* If your PC is able to see the USB volume, but your machine is not able, there may be an issue either with compatability or with the amount of power supplied. Try using a powered USB hub, or attach another power source to the Raspberry Pi on the port marked `PWR IN` (still use the `USB` port for data transmission).
 
 ## FAQ
 * Does this send my data to Chatter? No.
