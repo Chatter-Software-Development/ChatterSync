@@ -17,9 +17,9 @@ Total cost: $30.11
 1. Download or clone this repository to your computer for all the files you'll need.
 2. Download the latest version of the [Raspberry Pi Imager](https://www.raspberrypi.org/software/) and install it on your computer.
 3. Insert your MicroSD card into your computer and open the Raspberry Pi Imager. Select the MicroSD card as the target and select the provided `chattersync.img` file as the source. Click "Write" to write the image to the card.
-4. Configure your WiFi network by editing the `wpa_supplicant.conf` file on the MicroSD card. Instructions for this can be found [here](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md).
+4. Configure your WiFi network by creating a `wpa_supplicant.conf` file in the root directory of the MicroSD card mounted on your computer. See section below labeled "WiFi Setup" for more details. An example `wpa_supplicant.conf` is located in this repository at `/resources/wpa_supplicant.conf`.
 5. Eject the MicroSD card and insert it into the Raspberry Pi Zero W. Connect the Raspberry Pi to your CNC machine using the MicroUSB to USB-A cable plugged into the center MicroUSB port (marked `USB`, not `PWR IN`).
-6. Note the IP address of the Raspberry Pi. You can find this by logging into your router and looking at the list of connected devices. Alternatively, you can use a tool like [Advanced IP Scanner](https://www.advanced-ip-scanner.com/) to scan your network for the Raspberry Pi. The hostname of the Raspberry Pi is `chattersync`.
+6. Note the IP address of the Raspberry Pi. You can find this by logging into your router and looking at the list of connected devices. Alternatively, you can use a tool like `nmap` or [Advanced IP Scanner](https://www.advanced-ip-scanner.com/) to scan your network for the Raspberry Pi. The hostname of the Raspberry Pi is `chattersync`.
 7. Open the Visual Studio Code with the [Chatter NC Editor Extension](https://marketplace.visualstudio.com/items?itemName=chatter-dev.chatter-nc-editor) installed and select "Add Machine".
 8. Follow the prompts, using the IP address of the Raspberry Pi as the "Machine Address". The "Machine Name" can be whatever you want to call it. For "protocol", select "sftp" (this will default to port 22). This is the most secure option. For "username", enter `chatter`, and for "password", enter `chatter`. These are the default credentials for this image.
 9. Once you have added the machine, click the settings cogwheel and change the property `basePath` to `/mnt/chattersync`. This will allow you to access the USB emulation volume over the network.
@@ -44,11 +44,11 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={
-    ssid="Your_SSID"
-    psk="Your_PSK"
+    ssid="YOUR_SSID"
+    psk="YOUR_PASSPHRASE"
 }
 ```
-Replace `Your_SSID` with the name of your WiFi network and `Your_PSK` with the password for your WiFi network. The 2-letter country code should be that of your country.
+Replace `YOUR_SSID` with the name of your WiFi network and `YOUR_PASSPHRASE` with the password for your WiFi network. The 2-letter country code should be that of your country.
 
 5. Insert the MicroSD card into the Raspberry Pi and power it on. It should connect to your WiFi network automatically.
 
@@ -86,6 +86,15 @@ The provided image is a "blank slate" that will serve most shops' needs. However
 * If you are unable to connect to the Raspberry Pi, make sure that you have the correct path selected. The Raspberry Pi uses `/mnt/chatterchattersync/` as the default path.
 * If the machine is unable to read the USB, first test it on your PC to make sure you see the volume connected. If you do not see the volume connected, the issue is likely your USB cable. Try a different cable.
 * If your PC is able to see the USB volume, but your machine is not able, there may be an issue either with compatability or with the amount of power supplied. Try using a powered USB hub, or attach another power source to the Raspberry Pi on the port marked `PWR IN` (still use the `USB` port for data transmission).
+
+## Network Scan
+One of the silly parts of this setup, given the "headless" nature of the Raspberry Pi device, is finding it on the network. A simple way to find the device on the network is as follows:
+* Open PowerShell (NOT Command Prompt)
+* Install nmap: `winget install nmap`
+* Run the following command to find devices with "chatter" in their name: `nmap -sL 10.0.1.1-255 | Select-String 'chatter'` Replace the ip range with the proper one for your network if needed (eg, 192.168.1.1-255)
+* You should see a list of devices with "chatter" in their name. The default hostname of the device is `chattersync`. If the list is blank, your ChatterSync device is likely not on the network.
+
+(Instructions are for Windows, but nmap is available for Mac and Linux as well)
 
 ## FAQ
 * Does this send my data to Chatter? No.
