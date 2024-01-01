@@ -57,6 +57,24 @@ Simply connect the device to your CNC machine's USB port and then use an SFTP cl
 Give the device 20-30 seconds to boot.
 Please note: When files are updated, the device will pretend to disconnect and reconnect. This is normal behavior. It is *NOT* recommended to run NC file directly off of the device. Instead, copy them to the machine's internal memory before running them. Same rules you would follow when using a USB drive.
 
+## Finding the ChatterSync Device IP
+
+To connect to the ChatterSync device, you will need to know the IP address of the device. There are two ways to do this:
+
+### Option A - Using ChatterSync Discovery Tool (GUI)
+Once you've configured your WiFi and powered on your ChatterSync device, you can use our IP discovery tool located at [https://app.chatter.dev/chattersync.php](https://app.chatter.dev/chattersync.php). There you'll see a list of devices sending heartbeats from your public IP. Please make sure that whatever device you are using to run this tool is on the same network as the ChatterSync device.
+
+You can either use this IP to manually add to your list of machines in the VS Code extension, or you can click "View Settings JSON" and then copy and paste the JSON into the settings JSON under `"chatterNcEditor.ftpMachines"`. Be sure to add a comma before the previous machine in the list if you are adding a second machine.
+
+### Option B - Manual Network Scan (Command Line)
+One of the silly parts of this setup, given the "headless" nature of the Raspberry Pi device, is finding it on the network. A simple way to find the device on the network is as follows:
+* Open PowerShell (NOT Command Prompt)
+* Install nmap: `winget install nmap`
+* Run the following command to find devices with "chatter" in their name: `nmap -sL 10.0.1.1-255 | Select-String 'chatter'` Replace the ip range with the proper one for your network if needed (eg, 192.168.1.1-255)
+* You should see a list of devices with "chatter" in their name. The default hostname of the device is `chattersync`. If the list is blank, your ChatterSync device is likely not on the network.
+
+(Instructions are for Windows, but nmap is available for Mac and Linux as well)
+
 ## Compatibility
 We are simply emulating a flash drive so in theory, if you can use a flash drive, you can use this. Below is a list of what we and the community have tested. If you test this on a machine not listed below, please let us know (or submit a Pull Request to update this README).
 
@@ -68,6 +86,9 @@ We are simply emulating a flash drive so in theory, if you can use a flash drive
 * Limited compatability with Syntec controls (tested on 21ma), the automatic mount/unmount does not work properly so the device must be manually unplugged/plugged in when files are changed remotely.
 * Currently incompatible with Brother B00 control, causing a freeze on the file IO screen. We plan to test with another type of filesystem to see if this fixes the issue.
 * Haas NGC compatibility is questionable. We're doing our best to figure out why, but given that NGC controls all have FTP natively, it's not a huge deal - just save yourself the time and use what is built into the machine.
+* Compatible with Okuma machines at least back to 2019, tested on OSP-P300MA and OSP-P300MA-H
+* Compatible with YCM machines with Fanuc control at least back to 2014, tested on MXP-200FA
+* Not compatible with Datron Neo Series 2, texted on 2022 Next Control
 
 ## Customization
 The provided image is a "blank slate" that will serve most shops' needs. However, there are a few things you may want to customize.
@@ -87,15 +108,6 @@ The provided image is a "blank slate" that will serve most shops' needs. However
 * If the machine is unable to read the USB, first test it on your PC to make sure you see the volume connected. If you do not see the volume connected, the issue is likely your USB cable. Try a different cable.
 * If your PC is able to see the USB volume, but your machine is not able, there may be an issue either with compatability or with the amount of power supplied. Try using a powered USB hub, or attach another power source to the Raspberry Pi on the port marked `PWR IN` (still use the `USB` port for data transmission).
 
-## Network Scan
-One of the silly parts of this setup, given the "headless" nature of the Raspberry Pi device, is finding it on the network. A simple way to find the device on the network is as follows:
-* Open PowerShell (NOT Command Prompt)
-* Install nmap: `winget install nmap`
-* Run the following command to find devices with "chatter" in their name: `nmap -sL 10.0.1.1-255 | Select-String 'chatter'` Replace the ip range with the proper one for your network if needed (eg, 192.168.1.1-255)
-* You should see a list of devices with "chatter" in their name. The default hostname of the device is `chattersync`. If the list is blank, your ChatterSync device is likely not on the network.
-
-(Instructions are for Windows, but nmap is available for Mac and Linux as well)
-
 ## FAQ
 * Does this send my data to Chatter? No.
 * Is this ITAR / CMMC compliant? Yes? That's up to you. It's on your network, not ours.
@@ -110,6 +122,10 @@ One of the silly parts of this setup, given the "headless" nature of the Raspber
 * Modify daemon to lock out writing of files that are currently open by the machine and pause unmount/mount cycle so that files can safely be run off of the ChatterSync device.
 * Test machine write to USB emulation volume.
 * Create utility for resizing/customizing volume options.
+
+## Changelog
+
+View the [CHANGELOG.md](CHANGELOG.md) file for a detailed list of changes between versions.
 
 ## About Chatter
 [Chatter](https://chatter.dev/) is a manufacturing software company based in Roseville, CA, and our mission is to modernize the way that shops use their data. This company was started in a working machine shop, born out of frustration with most software tools for industry being expensive, outdated, and difficult to use. Our goal is to make software that provides real, tangible improvements to the way that shops operate.
